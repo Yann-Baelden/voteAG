@@ -1,5 +1,8 @@
-<script setup></script>
+<script setup>
+import MainNav from "@/components/MainNav.vue";
+</script>
 
 <template>
-  <h1 class="mt-8 text-6xl text-center">Hello World</h1>
+  <main-nav />
+  <RouterView></RouterView>
 </template>
