@@ -15,7 +15,7 @@
     </router-link>
 
     <router-link
-      to="/incomming-votes"
+      to="/votes"
       class="block w-4/5 bg-brand-green-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-3xl font-bold text-center"
     >
       Vote en cours
