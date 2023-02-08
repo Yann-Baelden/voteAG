@@ -8,7 +8,7 @@
     </router-link>
 
     <router-link
-      to="/incomming-votes"
+      to="/results"
       class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-2xl font-bold text-center"
     >
       Résultats des derniers votes
@@ -22,7 +22,7 @@
     </router-link>
 
     <router-link
-      to="/incomming-votes"
+      to="/my-account"
       class="block w-4/5 bg-brand-blue-2 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-3xl font-bold text-center"
     >
       Mon compte
