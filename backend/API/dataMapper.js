@@ -16,6 +16,35 @@ const dataMapper = {
       callback(null, resJSON);
     });
   },
+
+  updateOneEvent: (event, callback) => {
+    const eventId = event.id;
+
+    const sqlQuery = `UPDATE "events" SET (nb_voix_pour, nb_voix_contre, nb_abstentions) = ($1, $2, $3) WHERE event_id = ${eventId}`;
+
+    const values = [event.votesFor, event.votesAgainst, event.abstentions];
+
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      }
+    });
+  },
+
+  getEvent: (eventId, callback) => {
+    const sqlQuery = `SELECT * FROM "events" WHERE event_id = ${eventId};`;
+
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      } else {
+        const resJSON = JSON.stringify(res.rows);
+        callback(null, resJSON);
+      }
+    });
+  },
 };
 
 module.exports = dataMapper;

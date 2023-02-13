@@ -8,7 +8,6 @@ const userController = {
         return next(err);
       }
 
-      console.log(resData);
       res.status(200).send({ users: resData });
     });
   },
