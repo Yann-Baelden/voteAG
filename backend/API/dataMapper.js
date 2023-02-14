@@ -45,6 +45,22 @@ const dataMapper = {
       }
     });
   },
+
+  login: (email, callback) => {
+    //console.log(email);
+    const sqlQuery = `SELECT * FROM "users" WHERE email=${email}`;
+    console.log("dans le datamapper 1");
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.log(err);
+        return callback(err);
+      } else {
+        const resJson = JSON.stringify(res.rows);
+        console.log(resJson);
+        callback(resJson);
+      }
+    });
+  },
 };
 
 module.exports = dataMapper;
