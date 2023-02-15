@@ -11,7 +11,7 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/",
+      path: "/home",
       component: TheHome,
     },
     {
@@ -23,15 +23,15 @@ export default createRouter({
       component: VotesResults,
     },
     {
-      path: "/my-account",
+      path: "/myaccount",
       component: MyAccount,
     },
     {
-      path: "/incomming-votes",
+      path: "/incommingvotes",
       component: VotesIncomming,
     },
     {
-      path: "/login",
+      path: "/",
       component: SimpleLogin,
     },
   ],
