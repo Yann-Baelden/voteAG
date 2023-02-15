@@ -47,17 +47,15 @@ const dataMapper = {
   },
 
   login: (email, callback) => {
-    //console.log(email);
-    const sqlQuery = `SELECT * FROM "users" WHERE email=${email}`;
-    console.log("dans le datamapper 1");
+    const sqlQuery = `SELECT * FROM "users" WHERE email='${email}'`;
     client.query(sqlQuery, (err, res) => {
       if (err) {
-        console.log(err);
+        console.error("err dans le datamapper : ", err);
         return callback(err);
       } else {
-        const resJson = JSON.stringify(res.rows);
-        console.log(resJson);
-        callback(resJson);
+        console.log(res.rows[0]);
+        const resJson = JSON.stringify(res.rows[0]);
+        callback(null, resJson);
       }
     });
   },

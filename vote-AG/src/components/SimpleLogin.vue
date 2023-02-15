@@ -17,15 +17,15 @@ export default {
   },
   methods: {
     async login() {
-      const email = this.email;
+      const email = { email: this.email };
       console.log(email);
+      console.log(JSON.stringify(email));
       const res = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        //body: JSON.stringify(email),
-        body: { email: email },
+        body: JSON.stringify(email),
       });
       const data = await res.json();
       console.log(data);
