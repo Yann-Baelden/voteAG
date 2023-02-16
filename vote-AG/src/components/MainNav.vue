@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed top-0 left-0 h-16 mb-10 w-full">
+  <header class="fixed top-0 left-0 h-16 mb-10 w-full bg-white">
     <div
       class="mx-auto flex justify-between h-full flex-nowrap border-b border-solid"
     >

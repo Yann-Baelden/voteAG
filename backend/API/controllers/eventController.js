@@ -24,6 +24,17 @@ const eventController = {
       res.status(200).send({ event: resData });
     });
   },
+
+  displayEvents: async (req, res, next) => {
+    dataMapper.getAllEvents((err, resData) => {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+
+      res.status(200).send({ event: resData });
+    });
+  },
 };
 
 module.exports = eventController;

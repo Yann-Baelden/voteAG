@@ -1,13 +1,47 @@
 <template>
-  <div class="flex items-center w-full h-screen">
+  <div class="flex items-center w-full pt-32">
     <h1 class="block text-5xl font-black text-brand-blue-1 text-center mx-auto">
-      Page en construction
+      Liste des Votes
     </h1>
+  </div>
+
+  <div class="flex flex-col items-center w-full">
+    <ul
+      v-for="vote in votes"
+      :key="vote.event_id"
+      class="list-none pt-3 text-2xl"
+    >
+      <li>
+        <router-link
+          to="votes"
+          class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-2xl font-bold text-center"
+        >
+          {{ vote.nom }}
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   name: "VotesIncomming",
+  data() {
+    return {
+      votes: {},
+    };
+  },
+  async mounted() {
+    const res = await fetch("http://localhost:8080/votes", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const datas = await res.json();
+    this.votes = datas.event;
+
+    console.log(this.votes);
+  },
 };
 </script>

@@ -17,6 +17,19 @@ const dataMapper = {
     });
   },
 
+  getAllEvents: (callback) => {
+    const sqlQuery = "SELECT * FROM events";
+
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      }
+      const resData = res.rows;
+      callback(null, resData);
+    });
+  },
+
   updateOneEvent: (event, callback) => {
     const eventId = event.id;
 

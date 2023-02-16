@@ -14,15 +14,13 @@
           placeholder="Email"
         />
       </div>
-      <router-link to="home">
-        <div class="flex items-center justify-between">
-          <input
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-            value="Sign In"
-          />
-        </div>
-      </router-link>
+      <div class="flex items-center justify-between">
+        <input
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+          value="Sign In"
+        />
+      </div>
     </form>
   </div>
 </template>
@@ -38,8 +36,6 @@ export default {
   methods: {
     async login() {
       const email = { email: this.email };
-      console.log(email);
-      console.log(JSON.stringify(email));
       const res = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: {
@@ -49,8 +45,8 @@ export default {
       });
       const data = await res.json();
       const user = data.user;
-      console.log(user);
       localStorage.setItem("user", user);
+      this.$router.push("/home");
     },
   },
 };

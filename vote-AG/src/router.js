@@ -13,22 +13,57 @@ export default createRouter({
     {
       path: "/home",
       component: TheHome,
+      beforeEnter: async (to, from, next) => {
+        if (await localStorage.getItem("user")) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
     {
       path: "/votes",
       component: CurrentVote,
+      beforeEnter: async (to, from, next) => {
+        if (await localStorage.getItem("user")) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
     {
       path: "/results",
       component: VotesResults,
+      beforeEnter: async (to, from, next) => {
+        if (await localStorage.getItem("user")) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
     {
       path: "/myaccount",
       component: MyAccount,
+      beforeEnter: async (to, from, next) => {
+        if (await localStorage.getItem("user")) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
     {
       path: "/incommingvotes",
       component: VotesIncomming,
+      beforeEnter: async (to, from, next) => {
+        if (await localStorage.getItem("user")) {
+          next();
+        } else {
+          next("/");
+        }
+      },
     },
     {
       path: "/",

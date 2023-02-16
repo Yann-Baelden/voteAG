@@ -5,6 +5,7 @@ const mainController = require("./controllers/mainController");
 const router = express.Router();
 
 router.get("/users", userController.displayAllUsers);
+router.get("/votes", eventController.displayEvents);
 
 router.get("/events/:id", eventController.displayEvent);
 
