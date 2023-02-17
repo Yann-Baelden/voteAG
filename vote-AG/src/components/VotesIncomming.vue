@@ -40,8 +40,6 @@ export default {
     });
     const datas = await res.json();
     this.votes = datas.event;
-
-    console.log(this.votes);
   },
 };
 </script>

@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/users", userController.displayAllUsers);
 router.get("/votes", eventController.displayEvents);
 
-router.get("/events/:id", eventController.displayEvent);
+router.get("/event/:id", eventController.displayEvent);
 
 router.post("/login", mainController.loginVerif);
 

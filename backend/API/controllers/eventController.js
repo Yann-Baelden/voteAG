@@ -14,7 +14,8 @@ const eventController = {
   },
 
   displayEvent: async (req, res, next) => {
-    let eventId = req.params.id;
+    let eventId = req.params.id.slice(1);
+    console.log(eventId);
     dataMapper.getEvent(eventId, (err, resData) => {
       if (err) {
         console.error(err);

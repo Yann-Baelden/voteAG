@@ -27,6 +27,7 @@ export default {
   methods: {
     disconnect() {
       localStorage.clear();
+      this.$router.push("/");
     },
   },
 };

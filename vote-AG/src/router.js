@@ -6,6 +6,7 @@ import VotesResults from "@/components/VotesResults.vue";
 import MyAccount from "@/components/MyAccount.vue";
 import VotesIncomming from "@/components/VotesIncomming.vue";
 import SimpleLogin from "@/components/SimpleLogin.vue";
+import ChartJs from "@/components/ChartJs.vue";
 
 export default createRouter({
   history: createWebHistory(),
@@ -68,6 +69,10 @@ export default createRouter({
     {
       path: "/",
       component: SimpleLogin,
+    },
+    {
+      path: "/event/:id",
+      component: ChartJs,
     },
   ],
 });
