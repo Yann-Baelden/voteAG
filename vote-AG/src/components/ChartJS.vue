@@ -1,6 +1,9 @@
 <template>
+  <div class="mt-32">
+    <Bar :data="data" :options="options" />
+  </div>
   <div>
-    <Bar :data="data" :options="options" class="pt-40" />
+    {{ voteResult.nom }}
   </div>
 </template>
 
@@ -30,55 +33,61 @@ export default {
 
   data() {
     return {
+      voteResult: null,
       data: {
         labels: ["Pour", "Contre", "Abstentions"],
         datasets: [
           {
-            label: "My First Dataset",
-            data: [55, 2, 10],
+            label: "Votes",
+            data: [52, 10, 16],
+            backgroundColor: "rgb(0, 159, 227)",
+            fill: false,
           },
         ],
       },
       options: {
         responsive: true,
+        plugins: {
+          legend: {
+            position: "left",
+          },
+          title: {
+            display: true,
+            text: this.voteResult.nom,
+            padding: {
+              top: 10,
+              bottom: 30,
+            },
+          },
+        },
         scales: {
           y: {
             beginAtZero: true,
-          },
-        },
-        plugins: {
-          Legend: {
-            position: "top",
           },
         },
       },
       loading: false,
     };
   },
-  created() {
-    this.$watch(
-      () => this.$route.params,
-      () => {
-        this.getEventById();
-      },
-      { immediate: true }
+
+  async created() {
+    //this.loading = true;
+    console.log(this.$route.params.id);
+    const res = await fetch(
+      `http://localhost:8080/event/:${this.$route.params.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
-  },
-  methods: {
-    async getEventById() {
-      this.loading = true;
-      const res = await fetch(
-        `http://localhost:8080/event/:${this.$route.params.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const event = await res.json();
-      console.log(" retour event : ", event);
-    },
+    console.log("res : ", await res);
+    const datas = await res.json();
+    this.voteResult = JSON.parse(datas.voteResults);
+    console.log("datas : ", datas);
+    console.log("datas.voteResults parsé : ", JSON.parse(datas.voteResults));
+    console.log("voteResult : ", this.voteResult);
   },
 };
 </script>

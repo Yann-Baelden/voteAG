@@ -22,7 +22,7 @@ const eventController = {
         return next(err);
       }
 
-      res.status(200).send({ event: resData });
+      res.status(200).send({ voteResults: resData });
     });
   },
 

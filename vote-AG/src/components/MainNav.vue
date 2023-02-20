@@ -3,7 +3,7 @@
     <div
       class="mx-auto flex justify-between h-full flex-nowrap border-b border-solid"
     >
-      <router-link to="home" class="my-auto">
+      <router-link to="/home" replace class="my-auto">
         <font-awesome-icon icon="fa-solid fa-house" class="text-4xl ml-8" />
       </router-link>
 

@@ -53,7 +53,7 @@ const dataMapper = {
         console.error(err);
         return callback(err);
       } else {
-        const resJSON = JSON.stringify(res.rows);
+        const resJSON = JSON.stringify(res.rows[0]);
         callback(null, resJSON);
       }
     });
