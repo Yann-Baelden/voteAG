@@ -2,20 +2,22 @@ const dataMapper = require("../dataMapper");
 
 const eventController = {
   updateOneEvent: async (req, res, next) => {
-    const eventId = req.params.id;
-    dataMapper.updateOneEvent(eventId, (err) => {
+    let eventId = req.params.id.slice(1);
+    let choice = req.body.name;
+
+    dataMapper.updateOneEvent(eventId, choice, (err, resData) => {
       if (err) {
         console.error(err);
         return next(err);
       }
 
-      res.status(200);
+      res.status(200).send({ datas: resData });
     });
   },
 
   displayEvent: async (req, res, next) => {
     let eventId = req.params.id.slice(1);
-    console.log(eventId);
+
     dataMapper.getEvent(eventId, (err, resData) => {
       if (err) {
         console.error(err);

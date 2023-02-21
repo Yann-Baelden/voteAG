@@ -9,6 +9,7 @@ router.get("/votes", eventController.displayEvents);
 
 router.get("/event/:id", eventController.displayEvent);
 
+router.post("/vote/:id", eventController.updateOneEvent);
 router.post("/login", mainController.loginVerif);
 
 module.exports = router;

@@ -6,7 +6,7 @@ import VotesResults from "@/components/VotesResults.vue";
 import MyAccount from "@/components/MyAccount.vue";
 import VotesIncomming from "@/components/VotesIncomming.vue";
 import SimpleLogin from "@/components/SimpleLogin.vue";
-import ChartJs from "@/components/ChartJs.vue";
+import VotingResult from "@/components/VotingResult.vue";
 
 export default createRouter({
   history: createWebHistory(),
@@ -24,7 +24,9 @@ export default createRouter({
     },
     {
       path: "/votes",
+      name: "CurrentVote",
       component: CurrentVote,
+      props: true,
       beforeEnter: async (to, from, next) => {
         if (await localStorage.getItem("user")) {
           next();
@@ -72,7 +74,7 @@ export default createRouter({
     },
     {
       path: "/event/:id",
-      component: ChartJs,
+      component: VotingResult,
     },
   ],
 });

@@ -14,13 +14,13 @@
     class="flex flex-col items-center w-full"
   >
     <ul class="list-none pt-6">
-      <router-link :to="{ path: `/event/${vote.event_id}` }">
+      <button @click="goTo(vote)">
         <li
           class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-2xl font-bold text-center"
         >
           {{ vote.nom }}
         </li>
-      </router-link>
+      </button>
     </ul>
   </div>
 </template>
@@ -43,6 +43,19 @@ export default {
     });
     const resDatas = await res.json();
     this.votes = resDatas.event;
+  },
+  methods: {
+    goTo(vote) {
+      this.$router.push({
+        path: `/event/${vote.event_id}`,
+        query: {
+          name: vote.nom,
+          forVotes: vote.nb_voix_pour,
+          againstVotes: vote.nb_voix_contre,
+          abstentionVotes: vote.nb_abstentions,
+        },
+      });
+    },
   },
 };
 </script>

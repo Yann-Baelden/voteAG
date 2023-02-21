@@ -30,17 +30,29 @@ const dataMapper = {
     });
   },
 
-  updateOneEvent: (event, callback) => {
-    const eventId = event.id;
+  updateOneEvent: (id, choice, callback) => {
+    let subQuery = "";
+    switch (choice) {
+      case "pour":
+        subQuery = "SET nb_voix_pour = nb_voix_pour + 1";
+        break;
 
-    const sqlQuery = `UPDATE "events" SET (nb_voix_pour, nb_voix_contre, nb_abstentions) = ($1, $2, $3) WHERE event_id = ${eventId}`;
+      case "contre":
+        subQuery = "SET nb_voix_contre = nb_voix_contre + 1";
+        break;
 
-    const values = [event.votesFor, event.votesAgainst, event.abstentions];
-
+      default:
+        subQuery = "SET nb_abstentions = nb_abstentions + 1";
+        break;
+    }
+    const sqlQuery = `UPDATE events ${subQuery} WHERE event_id = ${id} RETURNING event_id;`;
     client.query(sqlQuery, (err, res) => {
       if (err) {
         console.error(err);
         return callback(err);
+      } else {
+        const resJSON = JSON.stringify(res.rows[0]);
+        callback(null, resJSON);
       }
     });
   },

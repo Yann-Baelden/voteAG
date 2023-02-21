@@ -12,12 +12,12 @@
       class="list-none pt-3 text-2xl"
     >
       <li>
-        <router-link
-          to="votes"
+        <button
           class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-2xl font-bold text-center"
+          @click="getVote(vote)"
         >
           {{ vote.nom }}
-        </router-link>
+        </button>
       </li>
     </ul>
   </div>
@@ -40,6 +40,15 @@ export default {
     });
     const datas = await res.json();
     this.votes = datas.event;
+  },
+
+  methods: {
+    getVote(vote) {
+      this.$router.push({
+        path: "/votes",
+        query: { data: vote.nom, id: vote.event_id },
+      });
+    },
   },
 };
 </script>
