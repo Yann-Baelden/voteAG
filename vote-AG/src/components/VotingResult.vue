@@ -6,6 +6,12 @@
     <div>Abstentions : {{ datas.absVotes }}</div>
     <div>Total des votes : {{ totalVotes }}</div>
   </div>
+  <div>
+    <button @click="startingVote">Début du vote</button>
+  </div>
+  <div>
+    <button @click="stopVoting">Arrêt du vote</button>
+  </div>
 </template>
 
 <script>
@@ -14,6 +20,7 @@ export default {
   data() {
     return {
       datas: {},
+      interval: null,
     };
   },
 
@@ -25,7 +32,7 @@ export default {
         parseInt(this.datas.absVotes)
       );
     },
-  },
+  } /*
   created() {
     this.datas = {
       name: this.$route.query.name,
@@ -33,8 +40,7 @@ export default {
       againstVotes: this.$route.query.againstVotes,
       absVotes: this.$route.query.abstentionVotes,
     };
-    setInterval(this.getVoteResult, 2000);
-  },
+  },*/,
   methods: {
     async getVoteResult() {
       let id = this.$route.params.id;
@@ -51,6 +57,15 @@ export default {
         absVotes: usefullDatas.nb_abstentions,
       };
       console.log(this.datas);
+    },
+    startingVote() {
+      if (!this.interval) {
+        this.interval = setInterval(this.getVoteResult, 2000);
+      }
+    },
+    stopVoting() {
+      clearInterval(this.interval);
+      this.interval = null;
     },
   },
 };

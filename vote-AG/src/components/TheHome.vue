@@ -27,6 +27,13 @@
     >
       Mon compte
     </router-link>
+
+    <router-link
+      to="admin"
+      class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-3xl font-bold text-center"
+    >
+      Admininistration
+    </router-link>
   </div>
 </template>
 

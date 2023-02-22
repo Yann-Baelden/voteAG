@@ -17,6 +17,19 @@ const dataMapper = {
     });
   },
 
+  getUserByMail: (userMail, callback) => {
+    const sqlQuery = `SELECT * FROM users WHERE email='${userMail}';`;
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      }
+
+      const resJSON = JSON.stringify(res.rows[0]);
+      callback(null, resJSON);
+    });
+  },
+
   getAllEvents: (callback) => {
     const sqlQuery = "SELECT * FROM events";
 
