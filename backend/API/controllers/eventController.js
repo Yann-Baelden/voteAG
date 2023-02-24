@@ -2,22 +2,35 @@ const dataMapper = require("../dataMapper");
 
 const eventController = {
   updateOneEvent: async (req, res, next) => {
-    let eventId = req.params.id.slice(1);
+    let eventId = req.params.id;
     let choice = req.body.name;
+    let value = req.body.nbVoix;
+    let toggleVote = req.body.isOpen;
+    console.log("toggleVote : ", toggleVote);
+    if (choice && value) {
+      dataMapper.updateOneEvent(eventId, choice, value, (err, resData) => {
+        if (err) {
+          console.error(err);
+          return next(err);
+        }
 
-    dataMapper.updateOneEvent(eventId, choice, (err, resData) => {
-      if (err) {
-        console.error(err);
-        return next(err);
-      }
+        res.status(200).send({ datas: resData });
+      });
+    } else {
+      dataMapper.togglingVote(toggleVote, eventId, (err, resData) => {
+        if (err) {
+          console.error(err);
+          return next(err);
+        }
 
-      res.status(200).send({ datas: resData });
-    });
+        res.status(200).send({ datas: resData });
+      });
+    }
   },
 
   displayEvent: async (req, res, next) => {
-    let eventId = req.params.id.slice(1);
-
+    let eventId = req.params.id;
+    console.log(eventId);
     dataMapper.getEvent(eventId, (err, resData) => {
       if (err) {
         console.error(err);

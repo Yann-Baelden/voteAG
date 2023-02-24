@@ -7,10 +7,12 @@ const router = express.Router();
 router.get("/users", userController.displayAllUsers);
 router.get("/votes", eventController.displayEvents);
 
-router.get("/users/:mail", userController.displayUser)
+router.get("/users/:mail", userController.displayUser);
 router.get("/event/:id", eventController.displayEvent);
 
 router.post("/vote/:id", eventController.updateOneEvent);
+
 router.post("/login", mainController.loginVerif);
+router.post("/users/:id", userController.updateUser);
 
 module.exports = router;

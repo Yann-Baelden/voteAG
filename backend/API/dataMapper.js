@@ -43,7 +43,7 @@ const dataMapper = {
     });
   },
 
-  updateOneEvent: (id, choice, callback) => {
+  updateOneEvent: (id, choice, value, callback) => {
     let subQuery = "";
     switch (choice) {
       case "pour":
@@ -58,7 +58,21 @@ const dataMapper = {
         subQuery = "SET nb_abstentions = nb_abstentions + 1";
         break;
     }
-    const sqlQuery = `UPDATE events ${subQuery} WHERE event_id = ${id} RETURNING event_id;`;
+    const sqlQuery = `UPDATE events ${subQuery} * ${value} WHERE event_id = ${id} RETURNING event_id;`;
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      } else {
+        const resJSON = JSON.stringify(res.rows[0]);
+        callback(null, resJSON);
+      }
+    });
+  },
+
+  togglingVote: (toggleVote, eventId, callback) => {
+    const sqlQuery = `UPDATE events SET isopen = ${toggleVote} WHERE event_id = ${eventId} RETURNING event_id;`;
+    console.log(sqlQuery);
     client.query(sqlQuery, (err, res) => {
       if (err) {
         console.error(err);
@@ -86,6 +100,22 @@ const dataMapper = {
 
   login: (email, callback) => {
     const sqlQuery = `SELECT * FROM "users" WHERE email='${email}'`;
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error("err dans le datamapper : ", err);
+        return callback(err);
+      } else {
+        console.log(res.rows[0]);
+        const resJson = JSON.stringify(res.rows[0]);
+        callback(null, resJson);
+      }
+    });
+  },
+
+  updateUserById: (id, user, callback) => {
+    console.log("dans le dataMapper : ", id, user);
+    const sqlQuery = `UPDATE users SET nom = '${user.nom}', prenom = '${user.prenom}', email = '${user.email}', nbvoix = '${user.nbvoix}' WHERE user_id=${user.user_id} RETURNING user_id;`;
+    console.log(sqlQuery);
     client.query(sqlQuery, (err, res) => {
       if (err) {
         console.error("err dans le datamapper : ", err);

@@ -10,7 +10,7 @@
     <button @click="startingVote">Début du vote</button>
   </div>
   <div>
-    <button @click="stopVoting">Arrêt du vote</button>
+    <button @click="stopingVote">Arrêt du vote</button>
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
   methods: {
     async getVoteResult() {
       let id = this.$route.params.id;
-      const res = await fetch(`http://localhost:8080/event/:${id}`, {
+      const res = await fetch(`http://localhost:8080/event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -58,14 +58,30 @@ export default {
       };
       console.log(this.datas);
     },
-    startingVote() {
+    async startingVote() {
+      let id = this.$route.params.id;
       if (!this.interval) {
         this.interval = setInterval(this.getVoteResult, 2000);
       }
+      const res = await fetch(`http://localhost:8080/vote/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isOpen: true }),
+      });
+      const resDatas = await res.json();
+      console.log(resDatas);
     },
-    stopVoting() {
+    async stopingVote() {
       clearInterval(this.interval);
       this.interval = null;
+      let id = this.$route.params.id;
+      const res = await fetch(`http://localhost:8080/vote/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isOpen: false }),
+      });
+      const resDatas = await res.json();
+      console.log(resDatas);
     },
   },
 };

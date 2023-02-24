@@ -46,7 +46,7 @@ export default {
     getVote(vote) {
       this.$router.push({
         path: "/votes",
-        query: { data: vote.nom, id: vote.event_id },
+        query: { data: vote.nom, id: vote.event_id, isOpen: vote.isOpen },
       });
     },
   },
