@@ -9,8 +9,10 @@ router.get("/votes", eventController.displayEvents);
 
 router.get("/users/:mail", userController.displayUser);
 router.get("/event/:id", eventController.displayEvent);
+router.get("/event/:eventId/user/:userId", eventController.displayEventUser);
 
 router.post("/vote/:id", eventController.updateOneEvent);
+router.post("/event/:id/user/:id", eventController.updateEventUser);
 
 router.post("/login", mainController.loginVerif);
 router.post("/users/:id", userController.updateUser);

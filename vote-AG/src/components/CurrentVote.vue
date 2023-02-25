@@ -69,19 +69,22 @@ export default {
       if (this.datas.isOpen) {
         let currentUser = JSON.parse(localStorage.getItem("user"));
         let nbVoix = currentUser.nbvoix;
-        console.log(nbVoix);
-        console.log(JSON.stringify({ name, nbVoix }));
-        const res = await fetch(`http://localhost:8080/vote/${id}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, nbVoix }),
-        });
-        const data = await res.json();
+        console.log(currentUser.user_id);
+        this.isAllowedVote(id, currentUser.user_id);
+        console.log("this.datas : ", this.datas);
+        if (this.datas.isAllowedVote) {
+          const res = await fetch(`http://localhost:8080/vote/${id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, nbVoix }),
+          });
+          const data = await res.json();
 
-        if (data) {
-          this.isModalVisible = true;
-        } else {
-          alert("Oups, un problème a eu lieu !");
+          if (data) {
+            this.isModalVisible = true;
+          } else {
+            alert("Oups, un problème a eu lieu !");
+          }
         }
       }
       const resGet = await fetch(`http://localhost:8080/event/${id}`, {
@@ -93,6 +96,36 @@ export default {
       console.log(usefullDatas);
       this.datas.isOpen = usefullDatas.isopen;
       console.log(this.datas);
+    },
+
+    async isAllowedVote(eventId, userId) {
+      const resVoteAllowed = await fetch(
+        `http://localhost:8080/event/${eventId}/user/${userId}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const datas = await resVoteAllowed.json();
+      console.log("isAllowedVote : ", datas === null);
+      if (!datas) {
+        this.datas.isAllowedVote = true;
+      }
+      this.datas.isAllowedVote = false;
+      console.log("test : ", this.datas.isAllowedVote);
+    },
+
+    async voteSaved(eventId, userId) {
+      const resVoteSaved = fetch(
+        `http://localhost:8080/event/${eventId}/user/${userId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const datas = await (await resVoteSaved).json();
+      console.log("voteSaved : ", datas);
+      //TODO le back pour cette requête
     },
   },
 };

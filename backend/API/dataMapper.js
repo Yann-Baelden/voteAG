@@ -72,7 +72,6 @@ const dataMapper = {
 
   togglingVote: (toggleVote, eventId, callback) => {
     const sqlQuery = `UPDATE events SET isopen = ${toggleVote} WHERE event_id = ${eventId} RETURNING event_id;`;
-    console.log(sqlQuery);
     client.query(sqlQuery, (err, res) => {
       if (err) {
         console.error(err);
@@ -94,6 +93,32 @@ const dataMapper = {
       } else {
         const resJSON = JSON.stringify(res.rows[0]);
         callback(null, resJSON);
+      }
+    });
+  },
+
+  getEventUser: (eventId, userId, callback) => {
+    const sqlQuery = `SELECT * FROM events_users WHERE event_id = ${eventId} AND user_id = ${userId};`;
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      } else {
+        const resJSON = JSON.stringify(res.rows[0]);
+        callback(null, resJSON);
+      }
+    });
+  },
+
+  updateEventUser: (eventId, userId, callback) => {
+    const sqlQuery = `INSERT INTO events_users (event_id, user_id) VALUES (${eventId}, ${userId}) RETURNING id;`;
+    client.query(sqlQuery, (err, res) => {
+      if (err) {
+        console.error(err);
+        return callback(err);
+      } else {
+        const resJson = JSON.stringify(res.rows[0]);
+        callback(null, resJson);
       }
     });
   },
@@ -121,7 +146,6 @@ const dataMapper = {
         console.error("err dans le datamapper : ", err);
         return callback(err);
       } else {
-        console.log(res.rows[0]);
         const resJson = JSON.stringify(res.rows[0]);
         callback(null, resJson);
       }

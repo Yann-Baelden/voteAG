@@ -30,7 +30,6 @@ const eventController = {
 
   displayEvent: async (req, res, next) => {
     let eventId = req.params.id;
-    console.log(eventId);
     dataMapper.getEvent(eventId, (err, resData) => {
       if (err) {
         console.error(err);
@@ -38,6 +37,31 @@ const eventController = {
       }
 
       res.status(200).send({ voteResults: resData });
+    });
+  },
+
+  displayEventUser: async (req, res, next) => {
+    let eventId = req.params.eventId;
+    let userId = req.params.userId;
+    console.log(eventId, userId);
+    dataMapper.getEventUser(eventId, userId, (err, resData) => {
+      if (err) {
+        console.error(err);
+        next(err);
+      }
+      res.status(200).send({ resData });
+    });
+  },
+
+  updateEventUser: async (req, res, next) => {
+    let eventId = req.params.eventId;
+    let userId = req.params.userId;
+    dataMapper.updateEventUser(eventId, userId, (err, resData) => {
+      if (err) {
+        console.error(err);
+        next(err);
+      }
+      res.status(200).send({ resData });
     });
   },
 
