@@ -10,10 +10,10 @@
       <img
         src="@/assets/EC-LOGO CHARTRE GRAPHIQUE_Plan de travail 1 copie 22.jpg"
       />
-      <router-link to="">
+      <router-link to="" class="my-auto">
         <font-awesome-icon
           icon="fa-solid fa-user-xmark"
-          class="text-4xl my-auto mr-8"
+          class="text-4xl mr-8"
           @click="disconnect"
         />
       </router-link>

@@ -15,59 +15,33 @@ export default createRouter({
     {
       path: "/home",
       component: TheHome,
-      beforeEnter: async (to, from, next) => {
-        if (await localStorage.getItem("user")) {
-          next();
-        } else {
-          next("/");
-        }
-      },
     },
     {
       path: "/votes",
       name: "CurrentVote",
       component: CurrentVote,
       props: true,
-      beforeEnter: async (to, from, next) => {
-        if (await localStorage.getItem("user")) {
-          next();
-        } else {
-          next("/");
-        }
-      },
     },
     {
       path: "/results",
       component: VotesResults,
       beforeEnter: async (to, from, next) => {
-        if (await localStorage.getItem("user")) {
-          next();
-        } else {
-          next("/");
+        let currentUser = await JSON.parse(localStorage.getItem("user"));
+
+        if (!currentUser.is_admin) {
+          alert("Vous n'avez pas les droits");
+          next("/home");
         }
+        next();
       },
     },
     {
       path: "/myaccount",
       component: MyAccount,
-      beforeEnter: async (to, from, next) => {
-        if (await localStorage.getItem("user")) {
-          next();
-        } else {
-          next("/");
-        }
-      },
     },
     {
       path: "/incommingvotes",
       component: VotesIncomming,
-      beforeEnter: async (to, from, next) => {
-        if (await localStorage.getItem("user")) {
-          next();
-        } else {
-          next("/");
-        }
-      },
     },
     {
       path: "/",
@@ -76,13 +50,6 @@ export default createRouter({
     {
       path: "/event/:id",
       component: VotingResult,
-      beforeEnter: async (to, from, next) => {
-        if (await localStorage.getItem("user")) {
-          next();
-        } else {
-          next("/");
-        }
-      },
     },
     {
       path: "/admin",
@@ -90,15 +57,12 @@ export default createRouter({
       component: AdminGestion,
       beforeEnter: async (to, from, next) => {
         let currentUser = await JSON.parse(localStorage.getItem("user"));
-        if (currentUser) {
-          if (!currentUser.is_admin) {
-            alert("Vous n'avez pas les droits");
-            next("/home");
-          }
-          next();
-        } else {
-          next("/");
+
+        if (!currentUser.is_admin) {
+          alert("Vous n'avez pas les droits");
+          next("/home");
         }
+        next();
       },
     },
   ],

@@ -39,6 +39,7 @@
 
 <script>
 import TheModal from "./TheModal.vue";
+
 export default {
   name: "CurrentVote",
   components: {
@@ -63,30 +64,40 @@ export default {
       id: this.$route.query.id,
       isOpen: this.$route.query.isOpen,
     };
+    this.getCurrentVote();
   },
   methods: {
     async updateVote(id, name) {
-      if (this.datas.isOpen) {
-        let currentUser = JSON.parse(localStorage.getItem("user"));
-        let nbVoix = currentUser.nbvoix;
-        console.log(currentUser.user_id);
-        this.isAllowedVote(id, currentUser.user_id);
-        console.log("this.datas : ", this.datas);
-        if (this.datas.isAllowedVote) {
-          const res = await fetch(`http://localhost:8080/vote/${id}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, nbVoix }),
-          });
-          const data = await res.json();
+      if (!this.datas.id) {
+        alert("Le vote n'est pas encore ouvert !");
+      } else {
+        console.log(this.datas.id);
+        if (this.datas.isOpen) {
+          let currentUser = JSON.parse(localStorage.getItem("user"));
+          let nbVoix = currentUser.nbvoix;
+          console.log("user id : ", currentUser.user_id);
+          this.isAllowedVote(id, currentUser.user_id);
+          console.log("this.datas : ", this.datas);
+          if (this.datas.isAllowedVote) {
+            this.savingVote(id, currentUser.user_id);
+            const res = await fetch(`http://localhost:8080/vote/${id}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, nbVoix }),
+            });
+            const data = await res.json();
 
-          if (data) {
-            this.isModalVisible = true;
+            if (data) {
+              this.isModalVisible = true;
+            } else {
+              alert("Oups, un problème a eu lieu !");
+            }
           } else {
-            alert("Oups, un problème a eu lieu !");
+            alert("Il semble que vous ayez déjà donné votre voix pour ce vote");
           }
         }
       }
+
       const resGet = await fetch(`http://localhost:8080/event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -106,26 +117,44 @@ export default {
           headers: { "Content-Type": "application/json" },
         }
       );
-      const datas = await resVoteAllowed.json();
-      console.log("isAllowedVote : ", datas === null);
-      if (!datas) {
+      const resDatas = await resVoteAllowed.json();
+      console.log("isAllowedVote : ", resDatas.length == 0);
+      if (resDatas.length == 0) {
         this.datas.isAllowedVote = true;
+      } else {
+        this.datas.isAllowedVote = false;
       }
-      this.datas.isAllowedVote = false;
       console.log("test : ", this.datas.isAllowedVote);
     },
 
-    async voteSaved(eventId, userId) {
-      const resVoteSaved = fetch(
+    async savingVote(eventId, userId) {
+      const resVoteSaved = await fetch(
         `http://localhost:8080/event/${eventId}/user/${userId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
         }
       );
-      const datas = await (await resVoteSaved).json();
-      console.log("voteSaved : ", datas);
-      //TODO le back pour cette requête
+      const resDatas = await resVoteSaved.json();
+      if (resDatas) {
+        this.datas.isAllowedVote = false;
+      }
+    },
+
+    async getCurrentVote() {
+      const resCurrentVote = await fetch(`http://localhost:8080/votes`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      //console.log("api : ", import.meta.env.VITE_API_URL);
+      const resData = await resCurrentVote.json();
+      resData.event.forEach((data) => {
+        if (data.isopen) {
+          this.datas.name = data.nom;
+          this.datas.id = data.event_id;
+          this.datas.isOpen = data.isopen;
+        }
+      });
     },
   },
 };

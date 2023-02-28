@@ -43,13 +43,12 @@ const eventController = {
   displayEventUser: async (req, res, next) => {
     let eventId = req.params.eventId;
     let userId = req.params.userId;
-    console.log(eventId, userId);
     dataMapper.getEventUser(eventId, userId, (err, resData) => {
       if (err) {
         console.error(err);
         next(err);
       }
-      res.status(200).send({ resData });
+      res.status(200).send(resData);
     });
   },
 
@@ -61,7 +60,8 @@ const eventController = {
         console.error(err);
         next(err);
       }
-      res.status(200).send({ resData });
+      console.log("resData du updateEventUser : ", resData);
+      res.status(200).send({ eventUserId: resData });
     });
   },
 

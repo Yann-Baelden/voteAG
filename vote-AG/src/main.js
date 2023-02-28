@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import { createApp } from "vue";
 import router from "@/router";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -6,6 +7,20 @@ import { faHouse, faUserXmark } from "@fortawesome/free-solid-svg-icons";
 
 import "@/index.css";
 import App from "@/App.vue";
+
+dotenv.config();
+router.beforeEach((to, from, next) => {
+  //CHECK USER
+  const user = localStorage.getItem("user");
+  if (to.fullPath !== "/" && to.fullPath !== "/login") {
+    if (!user) {
+      next("/login");
+      return;
+    }
+  }
+  next();
+  return;
+});
 
 library.add(faHouse, faUserXmark);
 

@@ -104,8 +104,13 @@ const dataMapper = {
         console.error(err);
         return callback(err);
       } else {
-        const resJSON = JSON.stringify(res.rows[0]);
-        callback(null, resJSON);
+        if (res.rows.length == 0) {
+          const resJSON = JSON.stringify(res.rows);
+          callback(null, resJSON);
+        } else {
+          const resJSON = JSON.stringify(res.rows[0]);
+          callback(null, resJSON);
+        }
       }
     });
   },
@@ -118,6 +123,7 @@ const dataMapper = {
         return callback(err);
       } else {
         const resJson = JSON.stringify(res.rows[0]);
+        console.log("res.rows : ", res.rows);
         callback(null, resJson);
       }
     });

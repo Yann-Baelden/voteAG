@@ -8,6 +8,7 @@
     </router-link>
 
     <router-link
+      v-if="isAdmin"
       to="results"
       class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-2xl font-bold text-center"
     >
@@ -29,6 +30,7 @@
     </router-link>
 
     <router-link
+      v-if="isAdmin"
       to="admin"
       class="block w-4/5 bg-brand-blue-1 rounded-2xl mx-auto mb-5 py-7 px-10 text-white text-3xl font-bold text-center"
     >
@@ -40,5 +42,14 @@
 <script>
 export default {
   name: "TheHome",
+  data() {
+    return {
+      isAdmin: false,
+    };
+  },
+  created() {
+    let currentUser = JSON.parse(localStorage.getItem("user"));
+    this.isAdmin = currentUser.is_admin;
+  },
 };
 </script>
