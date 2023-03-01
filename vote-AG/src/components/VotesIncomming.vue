@@ -32,7 +32,7 @@ export default {
     };
   },
   async mounted() {
-    const res = await fetch("http://localhost:8080/votes", {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/votes", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

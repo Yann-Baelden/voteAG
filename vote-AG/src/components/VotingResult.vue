@@ -44,7 +44,7 @@ export default {
   methods: {
     async getVoteResult() {
       let id = this.$route.params.id;
-      const res = await fetch(`http://localhost:8080/event/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/event/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -63,7 +63,7 @@ export default {
       if (!this.interval) {
         this.interval = setInterval(this.getVoteResult, 2000);
       }
-      const res = await fetch(`http://localhost:8080/vote/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/vote/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isOpen: true }),
@@ -75,7 +75,7 @@ export default {
       clearInterval(this.interval);
       this.interval = null;
       let id = this.$route.params.id;
-      const res = await fetch(`http://localhost:8080/vote/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/vote/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isOpen: false }),

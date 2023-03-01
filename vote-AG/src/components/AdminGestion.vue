@@ -98,12 +98,15 @@ export default {
   },
   methods: {
     async getUser() {
-      const res = await fetch(`http://localhost:8080/users/:${this.userMail}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/:${this.userMail}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const resDatas = await res.json();
       this.user = resDatas;
     },
@@ -112,7 +115,7 @@ export default {
       const user = this.user;
       console.log(JSON.stringify(user));
       const res = await fetch(
-        `http://localhost:8080/users/${this.user.user_id}`,
+        `${import.meta.env.VITE_API_URL}/users/${this.user.user_id}`,
         {
           method: "POST",
           headers: {

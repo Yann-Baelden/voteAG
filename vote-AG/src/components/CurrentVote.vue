@@ -71,20 +71,20 @@ export default {
       if (!this.datas.id) {
         alert("Le vote n'est pas encore ouvert !");
       } else {
-        console.log(this.datas.id);
         if (this.datas.isOpen) {
           let currentUser = JSON.parse(localStorage.getItem("user"));
           let nbVoix = currentUser.nbvoix;
-          console.log("user id : ", currentUser.user_id);
           this.isAllowedVote(id, currentUser.user_id);
-          console.log("this.datas : ", this.datas);
           if (this.datas.isAllowedVote) {
             this.savingVote(id, currentUser.user_id);
-            const res = await fetch(`http://localhost:8080/vote/${id}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ name, nbVoix }),
-            });
+            const res = await fetch(
+              `${import.meta.env.VITE_API_URL}/vote/${id}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, nbVoix }),
+              }
+            );
             const data = await res.json();
 
             if (data) {
@@ -98,38 +98,37 @@ export default {
         }
       }
 
-      const resGet = await fetch(`http://localhost:8080/event/${id}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const resGet = await fetch(
+        `${import.meta.env.VITE_API_URL}/event/${id}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const datas = await resGet.json();
       const usefullDatas = JSON.parse(datas.voteResults);
-      console.log(usefullDatas);
       this.datas.isOpen = usefullDatas.isopen;
-      console.log(this.datas);
     },
 
     async isAllowedVote(eventId, userId) {
       const resVoteAllowed = await fetch(
-        `http://localhost:8080/event/${eventId}/user/${userId}`,
+        `${import.meta.env.VITE_API_URL}/event/${eventId}/user/${userId}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         }
       );
       const resDatas = await resVoteAllowed.json();
-      console.log("isAllowedVote : ", resDatas.length == 0);
       if (resDatas.length == 0) {
         this.datas.isAllowedVote = true;
       } else {
         this.datas.isAllowedVote = false;
       }
-      console.log("test : ", this.datas.isAllowedVote);
     },
 
     async savingVote(eventId, userId) {
       const resVoteSaved = await fetch(
-        `http://localhost:8080/event/${eventId}/user/${userId}`,
+        `${import.meta.env.VITE_API_URL}/event/${eventId}/user/${userId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -142,11 +141,13 @@ export default {
     },
 
     async getCurrentVote() {
-      const resCurrentVote = await fetch(`http://localhost:8080/votes`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      //console.log("api : ", import.meta.env.VITE_API_URL);
+      const resCurrentVote = await fetch(
+        `${import.meta.env.VITE_API_URL}/votes`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const resData = await resCurrentVote.json();
       resData.event.forEach((data) => {
         if (data.isopen) {
