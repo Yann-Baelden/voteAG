@@ -66,15 +66,17 @@ export default {
     };
     this.getCurrentVote();
   },
+
   methods: {
     async updateVote(id, name) {
+      console.log("au début de updateVote : ", this.datas);
       if (!this.datas.id) {
         alert("Le vote n'est pas encore ouvert !");
       } else {
         if (this.datas.isOpen) {
           let currentUser = JSON.parse(localStorage.getItem("user"));
           let nbVoix = currentUser.nbvoix;
-          this.isAllowedVote(id, currentUser.user_id);
+          //this.isAllowedVote(id, currentUser.user_id);
           if (this.datas.isAllowedVote) {
             this.savingVote(id, currentUser.user_id);
             const res = await fetch(
@@ -93,6 +95,7 @@ export default {
               alert("Oups, un problème a eu lieu !");
             }
           } else {
+            console.log("à la fin de updateVote : ", this.datas);
             alert("Il semble que vous ayez déjà donné votre voix pour ce vote");
           }
         }
@@ -110,9 +113,14 @@ export default {
       this.datas.isOpen = usefullDatas.isopen;
     },
 
-    async isAllowedVote(eventId, userId) {
+    async isAllowedVote(eventId) {
+      let currentUser = JSON.parse(localStorage.getItem("user"));
+      console.log(currentUser.user_id);
+      console.log(this.datas.id);
       const resVoteAllowed = await fetch(
-        `${import.meta.env.VITE_API_URL}/event/${eventId}/user/${userId}`,
+        `${import.meta.env.VITE_API_URL}/event/${eventId}/user/${
+          currentUser.user_id
+        }`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -124,6 +132,7 @@ export default {
       } else {
         this.datas.isAllowedVote = false;
       }
+      console.log("dans isAllowedVote : ", this.datas);
     },
 
     async savingVote(eventId, userId) {
@@ -141,6 +150,7 @@ export default {
     },
 
     async getCurrentVote() {
+      console.log("dans getCurrentVote");
       const resCurrentVote = await fetch(
         `${import.meta.env.VITE_API_URL}/votes`,
         {
@@ -156,6 +166,7 @@ export default {
           this.datas.isOpen = data.isopen;
         }
       });
+      this.isAllowedVote(this.datas.id);
     },
   },
 };

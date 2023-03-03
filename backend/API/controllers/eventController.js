@@ -43,6 +43,7 @@ const eventController = {
   displayEventUser: async (req, res, next) => {
     let eventId = req.params.eventId;
     let userId = req.params.userId;
+    console.log("displayEventUser dans le controller : ", eventId, userId);
     dataMapper.getEventUser(eventId, userId, (err, resData) => {
       if (err) {
         console.error(err);

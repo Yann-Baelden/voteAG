@@ -1,16 +1,52 @@
 <template>
-  <div>
-    <h1 class="mt-32">{{ datas.name }}</h1>
-    <div>Votes Pour : {{ datas.forVotes }}</div>
-    <div>Votes Contre : {{ datas.againstVotes }}</div>
-    <div>Abstentions : {{ datas.absVotes }}</div>
-    <div>Total des votes : {{ totalVotes }}</div>
+  <div class="pt-16">
+    <h1 class="font-bold text-brand-blue-1 text-5xl text-center">
+      {{ datas.name }}
+    </h1>
+    <div class="flex items-center">
+      <table class="table-auto shadow-lg bg-white mx-auto my-6">
+        <thead>
+          <tr>
+            <th class="bg-blue-100 border text-left px-8 py-4">Vote</th>
+            <th class="bg-blue-100 border text-left px-8 py-4">Nbr de voix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border px-8 py-4">Pour</td>
+            <td class="border px-8 py-4">{{ datas.forVotes }}</td>
+          </tr>
+          <tr>
+            <td class="border px-8 py-4">Contre</td>
+            <td class="border px-8 py-4">{{ datas.againstVotes }}</td>
+          </tr>
+          <tr>
+            <td class="border px-8 py-4">Abstention</td>
+            <td class="border px-8 py-4">{{ datas.absVotes }}</td>
+          </tr>
+          <tr>
+            <td class="border px-8 py-4">Total des votes</td>
+            <td class="border px-8 py-4">{{ totalVotes }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div>
-    <button @click="startingVote">Début du vote</button>
+    <button
+      class="block w-4/5 bg-brand-green-1 mx-auto mb-12 py-7 px-10 text-white text-3xl font-bold text-center rounded-full"
+      @click="startingVote"
+    >
+      Début du vote
+    </button>
   </div>
   <div>
-    <button @click="stopingVote">Arrêt du vote</button>
+    <button
+      class="block w-4/5 bg-red-700 mx-auto mb-12 py-7 px-10 text-white text-3xl font-bold text-center rounded-full"
+      @click="stopingVote"
+    >
+      Arrêt du vote
+    </button>
   </div>
 </template>
 

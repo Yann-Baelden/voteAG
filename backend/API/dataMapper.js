@@ -131,6 +131,7 @@ const dataMapper = {
 
   login: (email, callback) => {
     const sqlQuery = `SELECT * FROM "users" WHERE email='${email}'`;
+    console.log(sqlQuery);
     client.query(sqlQuery, (err, res) => {
       if (err) {
         console.error("err dans le datamapper : ", err);
